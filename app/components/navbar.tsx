@@ -3,8 +3,8 @@ import Button from "./button";
 export default function Navbar() {
   return (
     <>
-      <nav className="fixed flex w-full bg-red-900 justify-between px-10 py-5">
-        <h1 className="text-xl">SnakesMapping</h1>
+      <nav className="fixed flex w-full bg-transparent  justify-between px-10 py-5 z-999">
+        <h1 className="text-xl font-bold">SnakesMapping</h1>
 
         <div className="flex gap-10">
           <ul className="flex gap-10">
