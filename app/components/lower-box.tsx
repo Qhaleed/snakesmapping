@@ -1,4 +1,11 @@
 import HorizontalSnakeCard from "./horizontal-snake-card";
+import dynamic from "next/dynamic";
+
+// Dynamic import to avoid SSR issues with Leaflet
+const PhilippinesMap = dynamic(() => import("./philippines-map"), {
+  ssr: false,
+  loading: () => <div className="w-full h-full rounded-2xl bg-gray-200 animate-pulse" />,
+});
 
 export default function LowerBox() {
   return (
@@ -43,15 +50,8 @@ export default function LowerBox() {
           />
         </div>
         {/* Right side */}
-        <div className="w-2/3">
-          <HorizontalSnakeCard
-            title="Samar Cobra"
-            author="Carlos Tan"
-            imageLink="/snake-2.png"
-            description="Rare Samar cobra documented in Eastern Visayas forest reserve"
-            location="Samar, Philippines"
-            calendar="Dec 12, 2025"
-          />
+        <div className="w-2/3 h-[450px] p-6">
+          <PhilippinesMap />
         </div>
       </div>
     </>
