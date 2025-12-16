@@ -8,7 +8,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="fixed bottom-0 w-full bg-white py-4 ">
+    <footer className=" w-full bg-white py-4 ">
       <div className="flex items-center justify-between px-8">
         <div className="flex-1"></div>
 
