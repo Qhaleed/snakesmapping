@@ -1,29 +1,6 @@
 "use client";
-
-import Image from "next/image";
-import Search from "../components/search";
+import Hero from "../components/Hero";
 
 export default function AdminDashboard() {
-  return (
-    <div className="relative h-[60vh] w-full">
-      <Image
-        src="/hero-banner.png"
-        alt="snake-banner"
-        fill
-        className="object-cover"
-        priority
-      />
-
-      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-white drop-shadow-lg">
-        <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
-          SnakesMapping: Filipino Snakes
-        </h1>
-        <h2 className="text-lg sm:text-xl md:text-2xl">
-          Discover, identify, and map snakes nationally
-        </h2>
-
-        <Search></Search>
-      </div>
-    </div>
-  );
+  return <Hero />;
 }
