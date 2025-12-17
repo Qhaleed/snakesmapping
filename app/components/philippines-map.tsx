@@ -43,10 +43,8 @@ export default function PhilippinesMap() {
   return (
     <div className="relative w-full h-full">
       {/* Filter Tab */}
-      <div className="absolute top-4 right-4 z-[1000] bg-red-600 rounded-lg shadow-md px-4 py-2">
-        <span className="text-sm font-semibold text-white">
-          Philippine King Cobra
-        </span>
+      <div className="absolute top-4 right-4 z-1000 bg-white rounded-lg shadow-md px-4 py-2">
+        <span className="text-sm  text-black">Philippine King Cobra</span>
       </div>
 
       <MapContainer

@@ -3,17 +3,21 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 export default function Search() {
   return (
-    <div className="flex bg-white w-fit text-gray-400 rounded-2xl">
-      <input
-        className=" placeholder:text-gray-400 w-150 px-10 focus:outline-none"
-        placeholder="Search species, locations, or author"
-      ></input>
+    <div className="flex items-center bg-white w-150 justify-between rounded-4xl py-2 px-2  shadow-md">
       <div>
         <FontAwesomeIcon
           icon={faMagnifyingGlass}
-          className="px-10 hover:cursor-pointer py-2 rounded-2xl mt-1 mr-1 bg-green-400 text-white"
+          className="px-4 text-gray-500 hover:cursor-pointer"
+        />
+        <input
+          className="placeholder:text-gray-400 text-gray-900 w-105 px-4 focus:outline-none"
+          placeholder="Search species, locations, or author"
         />
       </div>
+
+      <button className="bg-green-600 text-white font-semibold rounded-3xl py-2 px-6 hover:bg-green-700 hover:cursor-pointer transition-colors">
+        Search
+      </button>
     </div>
   );
 }
