@@ -4,7 +4,9 @@ import dynamic from "next/dynamic";
 // Dynamic import to avoid SSR issues with Leaflet
 const PhilippinesMap = dynamic(() => import("./philippines-map"), {
   ssr: false,
-  loading: () => <div className="w-full h-full rounded-2xl bg-gray-200 animate-pulse" />,
+  loading: () => (
+    <div className="w-full h-full rounded-2xl bg-gray-200 animate-pulse" />
+  ),
 });
 
 export default function LowerBox() {
@@ -27,7 +29,7 @@ export default function LowerBox() {
           <HorizontalSnakeCard
             title="King Cobra"
             author="Maria Cruz"
-            imageLink="/snake-2.png"
+            imageLink="/ph-king-cobra.jpg"
             description="Large venomous snake spotted near rice paddies in Palawan"
             location="Palawan, Philippines"
             calendar="Dec 10, 2025"
@@ -35,7 +37,7 @@ export default function LowerBox() {
           <HorizontalSnakeCard
             title="Reticulated Python"
             author="Pedro Reyes"
-            imageLink="/snake-2.png"
+            imageLink="/rt-py.jpg"
             description="6 meter python found coiled near river bank in Mindanao"
             location="Davao, Philippines"
             calendar="Dec 8, 2025"
@@ -43,7 +45,7 @@ export default function LowerBox() {
           <HorizontalSnakeCard
             title="Philippine Pit Viper"
             author="Ana Lopez"
-            imageLink="/snake-2.png"
+            imageLink="/ph-pit-viper.jpg"
             description="Green pit viper spotted in mountain trail during hike"
             location="Baguio, Philippines"
             calendar="Dec 5, 2025"

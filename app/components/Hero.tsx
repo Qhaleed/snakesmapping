@@ -13,8 +13,8 @@ export default function Hero() {
         />
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-white drop-shadow-lg">
-          <h1 className="text-3xl font-bold sm:text-4xl md:text-5xl">
-            SnakesMapping: Filipino Snakes
+          <h1 className="text-3xl  sm:text-4xl md:text-5xl">
+            <span className="font-bold">SnakesMapping:</span> Filipino Snakes
           </h1>
           <h2 className="text-lg sm:text-xl md:text-2xl">
             Discover, identify, and map snakes nationally

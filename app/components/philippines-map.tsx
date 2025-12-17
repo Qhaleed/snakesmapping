@@ -41,27 +41,36 @@ const snakeLocations = [
 
 export default function PhilippinesMap() {
   return (
-    <MapContainer
-      center={[12.8797, 121.774]}
-      zoom={6}
-      className="w-full h-full rounded-2xl"
-      style={{ minHeight: "100%" }}
-    >
-      {/* CartoDB Voyager - Clean modern style */}
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-      />
+    <div className="relative w-full h-full">
+      {/* Filter Tab */}
+      <div className="absolute top-4 right-4 z-[1000] bg-red-600 rounded-lg shadow-md px-4 py-2">
+        <span className="text-sm font-semibold text-white">
+          Philippine King Cobra
+        </span>
+      </div>
 
-      {snakeLocations.map((snake, index) => (
-        <Marker key={index} position={snake.position} icon={icon}>
-          <Popup>
-            <strong>{snake.title}</strong>
-            <br />
-            {snake.location}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+      <MapContainer
+        center={[12.8797, 121.774]}
+        zoom={6}
+        className="w-full h-full rounded-2xl"
+        style={{ minHeight: "100%" }}
+      >
+        {/* CartoDB Voyager - Clean modern style */}
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+        />
+
+        {snakeLocations.map((snake, index) => (
+          <Marker key={index} position={snake.position} icon={icon}>
+            <Popup>
+              <strong>{snake.title}</strong>
+              <br />
+              {snake.location}
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 }
