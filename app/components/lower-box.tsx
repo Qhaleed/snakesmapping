@@ -21,38 +21,38 @@ export default function LowerBox() {
           <HorizontalWildlifeCard
             title="African Elephant"
             author="David Okoye"
-            imageLink="/african-elephant.jpg"
+            imageLink="/animal-images/african-elephant.png"
             description="A herd of elephants seen migrating across the Serengeti."
             location="Serengeti, Tanzania"
             calendar="Nov 20, 2025"
-            authorImage="/elephant-avatar.png"
+            authorImage="/animal-images/elephant-avatar.png"
           />
           <HorizontalWildlifeCard
             title="Bald Eagle"
             author="Emily Johnson"
-            imageLink="/bald-eagle.jpg"
+            imageLink="/animal-images/bald-eagle.png"
             description="Bald eagle spotted soaring over the forests of Alaska."
             location="Alaska, USA"
             calendar="Oct 12, 2025"
-            authorImage="/baldeagle-avatar.png"
+            authorImage="/animal-images/baldeagle-avatar.png"
           />
           <HorizontalWildlifeCard
             title="Giant Panda"
             author="Li Wei"
-            imageLink="/giant-panda.jpg"
+            imageLink="/animal-images/giant-panda.png"
             description="Giant panda observed eating bamboo in Sichuan."
             location="Sichuan, China"
             calendar="Sep 5, 2025"
-            authorImage="/panda-avatar.png"
+            authorImage="/animal-images/panda-avatar.png"
           />
           <HorizontalWildlifeCard
             title="Red Kangaroo"
             author="Sophie Brown"
-            imageLink="/red-kangaroo.jpg"
+            imageLink="/animal-images/red-kangaroo.png"
             description="Red kangaroo hopping across the outback."
             location="Northern Territory, Australia"
             calendar="Aug 18, 2025"
-            authorImage="/kangaroo-avatar.png"
+            authorImage="/animal-images/red-kangaroo.png"
           />
         
         </div>
