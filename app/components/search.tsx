@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function Search() {
   return (
@@ -14,10 +15,12 @@ export default function Search() {
           placeholder="Search species, locations, or author"
         />
       </div>
-
-      <button className="bg-green-600 text-white font-semibold rounded-3xl py-2 px-6 hover:bg-green-700 hover:cursor-pointer transition-colors">
+      <Link href="/wildlife-map">
+         <button className="bg-green-600 text-white font-semibold rounded-3xl py-2 px-6 hover:bg-green-700 hover:cursor-pointer transition-colors">
         Search
       </button>
+      </Link>
+   
     </div>
   );
 }

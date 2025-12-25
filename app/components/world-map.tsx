@@ -23,40 +23,52 @@ const wildlifeLocations = [
     position: [-2.333333, 34.833333] as [number, number],
     title: "African Elephant",
     location: "Serengeti, Tanzania",
+    author: "David Okoye",
+    description: "A herd of elephants seen migrating across the Serengeti.",
+    date: "Nov 20, 2025",
+    image: "/animal-images/african-elephant.png",
   },
   {
     // Alaska - Bald Eagle
     position: [64.200841, -149.493673] as [number, number],
     title: "Bald Eagle",
     location: "Alaska, USA",
+    author: "Emily Johnson",
+    description: "Bald eagle spotted soaring over the forests of Alaska.",
+    date: "Oct 12, 2025",
+    image: "/animal-images/bald-eagle.png",
   },
   {
     // Sichuan - Giant Panda
     position: [30.666667, 104.066667] as [number, number],
     title: "Giant Panda",
     location: "Sichuan, China",
+    author: "Li Wei",
+    description: "Giant panda observed eating bamboo in Sichuan.",
+    date: "Sep 5, 2025",
+    image: "/animal-images/giant-panda.png",
   },
   {
     // Northern Territory - Red Kangaroo
     position: [-20.000000, 133.000000] as [number, number],
     title: "Red Kangaroo",
     location: "Northern Territory, Australia",
+    author: "Sophie Brown",
+    description: "Red kangaroo hopping across the outback.",
+    date: "Aug 18, 2025",
+    image: "/animal-images/red-kangaroo.png",
   },
 ];
 
-export default function WorldMap() {
+export default function WorldMap({ onMarkerClick }: { onMarkerClick?: (wildlife: any) => void }) {
   return (
     <div className="relative w-full h-full">
-      {/* Filter Tab */}
-      <div className="absolute top-4 right-4 z-1000 bg-white rounded-lg shadow-md px-4 py-2">
-        <span className="text-sm  text-black">Wildlife Sightings (Global)</span>
-      </div>
 
       <MapContainer
         center={[20, 0]}
-        zoom={2}
-        minZoom={2}
-        className="w-full h-full rounded-2xl"
+        zoom={3}
+        minZoom={3}        maxBounds={[[-90, -180], [90, 180]]}
+        maxBoundsViscosity={1.0}        className="w-full h-full rounded-2xl"
         style={{ minHeight: "100%" }}
       >
         {/* CartoDB Voyager - Clean modern style */}
@@ -66,13 +78,14 @@ export default function WorldMap() {
         />
 
         {wildlifeLocations.map((wildlife, index) => (
-          <Marker key={index} position={wildlife.position} icon={icon}>
-            <Popup>
-              <strong>{wildlife.title}</strong>
-              <br />
-              {wildlife.location}
-            </Popup>
-          </Marker>
+          <Marker
+            key={index}
+            position={wildlife.position}
+            icon={icon}
+            eventHandlers={{
+              click: () => onMarkerClick?.(wildlife),
+            }}
+          />
         ))}
       </MapContainer>
     </div>
