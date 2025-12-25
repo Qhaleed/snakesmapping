@@ -6,7 +6,7 @@ export default function Hero() {
       <div className="relative h-[60vh] w-full">
         <Image
           src="/hero-banner.png"
-          alt="snake-banner"
+          alt="wildlife-banner"
           fill
           className="object-cover"
           priority
@@ -14,10 +14,10 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-white drop-shadow-lg">
           <h1 className="text-3xl  sm:text-4xl md:text-5xl">
-            <span className="font-bold">SnakesMapping:</span> Filipino Snakes
+            <span className="font-bold">WildlifeMapping:</span> Global Wildlife
           </h1>
           <h2 className="text-lg sm:text-xl md:text-2xl">
-            Discover, identify, and map snakes nationally
+            Discover, identify, and map wildlife worldwide
           </h2>
 
           <Search></Search>

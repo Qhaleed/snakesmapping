@@ -1,5 +1,5 @@
 import Button from "./button";
-
+import Link from "next/link";
 export default function Navbar() {
   return (
     <nav className="fixed inset-x-0 top-0 z-[999]">
@@ -7,15 +7,22 @@ export default function Navbar() {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.25),transparent_35%),radial-gradient(circle_at_80%_0%,rgba(59,130,246,0.25),transparent_30%),radial-gradient(circle_at_80%_80%,rgba(16,185,129,0.25),transparent_30%)]" />
 
         <h1 className="text-xl font-bold text-white drop-shadow-sm">
-          SnakesMapping
+          WildlifeMapping
         </h1>
 
         <div className="flex items-center gap-10 text-white">
           <ul className="flex items-center gap-8 text-sm font-medium">
+            
+            <Link href="/">
+            <li>Home</li>
+            
+            </Link>
             <li>Find</li>
-            <li>Collaborate</li>
             <li>Community</li>
-            <li>Resources</li>
+            <Link href="/leaderboards">
+            <li><a>Leaderboards</a></li>
+
+            </Link>
           </ul>
 
           <ul className="flex items-center gap-4 text-sm font-medium">

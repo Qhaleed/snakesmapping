@@ -7,23 +7,25 @@ type cardData = {
   description: string;
   location: string;
   calendar: string;
+  authorImage?: string;
 };
 
-export default function HorizontalSnakeCard({
+export default function HorizontalWildlifeCard({
   imageLink,
   title,
   author,
   description,
   location,
   calendar,
+  authorImage = "/wildlife-avatar.png",
 }: cardData) {
   return (
     <div className="flex w-full h-48 shrink-0 bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-shadow">
-      {/* Snake image */}
+      {/* Wildlife image */}
       <div className="relative w-48 h-full shrink-0">
         <Image
           src={imageLink}
-          alt="snakeImage"
+          alt="wildlifeImage"
           fill
           sizes="192px"
           className="object-cover"
@@ -37,7 +39,7 @@ export default function HorizontalSnakeCard({
         <div className="flex items-center gap-2 min-w-0">
           <div className="relative w-5 h-5 shrink-0 rounded-full overflow-hidden">
             <Image
-              src="/snake-2.png"
+              src={authorImage}
               alt="author avatar"
               fill
               sizes="20px"

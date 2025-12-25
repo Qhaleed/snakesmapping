@@ -1,8 +1,8 @@
-import HorizontalSnakeCard from "./horizontal-snake-card";
+import HorizontalWildlifeCard from "./horizontal-wildlife-card";
 import dynamic from "next/dynamic";
 
 // Dynamic import to avoid SSR issues with Leaflet
-const PhilippinesMap = dynamic(() => import("./philippines-map"), {
+const WorldMap = dynamic(() => import("./world-map"), {
   ssr: false,
   loading: () => (
     <div className="w-full h-full rounded-2xl bg-gray-200 animate-pulse" />
@@ -18,42 +18,47 @@ export default function LowerBox() {
           className="w-1/3 flex flex-col px-10 pt-10 gap-4"
           style={{ height: "450px", overflowY: "scroll" }}
         >
-          <HorizontalSnakeCard
-            title="Philippine Rat Snake"
-            author="Juan Santos"
-            imageLink="/snake-2.png"
-            description="1.4 meter orange-brown Philippine Rat Snake observed hunting in Nueva Ecija farmlands"
-            location="Nueva Ecija, Philippines"
-            calendar="Dec 15, 2025"
+          <HorizontalWildlifeCard
+            title="African Elephant"
+            author="David Okoye"
+            imageLink="/african-elephant.jpg"
+            description="A herd of elephants seen migrating across the Serengeti."
+            location="Serengeti, Tanzania"
+            calendar="Nov 20, 2025"
+            authorImage="/elephant-avatar.png"
           />
-          <HorizontalSnakeCard
-            title="King Cobra"
-            author="Maria Cruz"
-            imageLink="/ph-king-cobra.jpg"
-            description="Large venomous snake spotted near rice paddies in Palawan"
-            location="Palawan, Philippines"
-            calendar="Dec 10, 2025"
+          <HorizontalWildlifeCard
+            title="Bald Eagle"
+            author="Emily Johnson"
+            imageLink="/bald-eagle.jpg"
+            description="Bald eagle spotted soaring over the forests of Alaska."
+            location="Alaska, USA"
+            calendar="Oct 12, 2025"
+            authorImage="/baldeagle-avatar.png"
           />
-          <HorizontalSnakeCard
-            title="Reticulated Python"
-            author="Pedro Reyes"
-            imageLink="/rt-py.jpg"
-            description="6 meter python found coiled near river bank in Mindanao"
-            location="Davao, Philippines"
-            calendar="Dec 8, 2025"
+          <HorizontalWildlifeCard
+            title="Giant Panda"
+            author="Li Wei"
+            imageLink="/giant-panda.jpg"
+            description="Giant panda observed eating bamboo in Sichuan."
+            location="Sichuan, China"
+            calendar="Sep 5, 2025"
+            authorImage="/panda-avatar.png"
           />
-          <HorizontalSnakeCard
-            title="Philippine Pit Viper"
-            author="Ana Lopez"
-            imageLink="/ph-pit-viper.jpg"
-            description="Green pit viper spotted in mountain trail during hike"
-            location="Baguio, Philippines"
-            calendar="Dec 5, 2025"
+          <HorizontalWildlifeCard
+            title="Red Kangaroo"
+            author="Sophie Brown"
+            imageLink="/red-kangaroo.jpg"
+            description="Red kangaroo hopping across the outback."
+            location="Northern Territory, Australia"
+            calendar="Aug 18, 2025"
+            authorImage="/kangaroo-avatar.png"
           />
+        
         </div>
         {/* Right side */}
         <div className="w-2/3 h-[450px] p-6">
-          <PhilippinesMap />
+          <WorldMap />
         </div>
       </div>
     </>
