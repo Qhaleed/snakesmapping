@@ -55,6 +55,7 @@ export default function WorldMap() {
       <MapContainer
         center={[20, 0]}
         zoom={2}
+        minZoom={2}
         className="w-full h-full rounded-2xl"
         style={{ minHeight: "100%" }}
       >

@@ -20,7 +20,7 @@ export default function Navbar() {
             <li>Find</li>
             <li>Community</li>
             <Link href="/leaderboards">
-            <li><a>Leaderboards</a></li>
+            <li>Leaderboards</li>
 
             </Link>
           </ul>
