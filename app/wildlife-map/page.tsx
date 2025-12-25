@@ -3,6 +3,7 @@
 import { useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import BackButton from "../components/back-button";
 
 // Dynamic import to avoid SSR issues with Leaflet
 const WorldMap = dynamic(() => import("../components/world-map"), {
@@ -26,6 +27,8 @@ export default function WildlifeMap() {
 
   return (
     <div className="relative w-full h-screen bg-white">
+      <BackButton />
+
       {/* Main Map */}
       <div className="w-full h-full">
         <WorldMap onMarkerClick={handleMarkerClick} />
@@ -42,7 +45,7 @@ export default function WildlifeMap() {
             onChange={(e) => setSearchAnimal(e.target.value)}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button className="mt-2 w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600">
+          <button className="mt-2 w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600">
             Search
           </button>
         </div>
@@ -68,7 +71,7 @@ export default function WildlifeMap() {
             <p className="text-sm text-gray-600 mb-4"><strong>Date:</strong> {selectedWildlife.date}</p>
             <button
               onClick={closeModal}
-              className="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600"
+              className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600"
             >
               Close
             </button>

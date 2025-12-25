@@ -68,7 +68,9 @@ export default function WorldMap({ onMarkerClick }: { onMarkerClick?: (wildlife:
         center={[20, 0]}
         zoom={3}
         minZoom={3}        maxBounds={[[-90, -180], [90, 180]]}
-        maxBoundsViscosity={1.0}        className="w-full h-full rounded-2xl"
+        maxBoundsViscosity={1.0}
+        zoomControl={false}
+        className="w-full h-full rounded-2xl"
         style={{ minHeight: "100%" }}
       >
         {/* CartoDB Voyager - Clean modern style */}
