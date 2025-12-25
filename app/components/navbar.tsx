@@ -17,7 +17,10 @@ export default function Navbar() {
             <li>Home</li>
             
             </Link>
+            <Link href="/wildlife-map">
             <li>Find</li>
+            
+            </Link>
             <li>Community</li>
             <Link href="/leaderboards">
             <li>Leaderboards</li>

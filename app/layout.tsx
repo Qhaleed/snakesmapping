@@ -15,9 +15,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SnakesMapping.ph",
+  title: "WildlifeMapping: Visualize and Map Wildlife Sightings Worldwide",
   description:
-    "A web-based platform for snake enthusiasts, hikers, and data visualizers for better visualization and mapping of snakes in the Philippines ",
+    "Discover and share wildlife sightings across the globe with WildlifeMapping. Explore interactive maps, contribute your own observations, and connect with a community of nature enthusiasts.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bkack`}
       >
         <Navbar />
         {children}
