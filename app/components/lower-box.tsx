@@ -12,7 +12,7 @@ const WorldMap = dynamic(() => import("./world-map"), {
 export default function LowerBox() {
   return (
     <>
-      <div className="flex w-full mb-10">
+      <div className="flex w-full mb-10 ">
         {/* Left side */}
         <div
           className="w-1/3 flex flex-col px-10 pt-10 gap-4"

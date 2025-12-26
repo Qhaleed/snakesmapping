@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Footer from "./components/footer";
 import Navbar from "./components/navbar";
+import AppWrapper from "./components/app-wrapper";
 import { Analytics } from "@vercel/analytics/next"
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,9 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-bkack`}
       >
-        <Navbar />
-        {children}
-        <Footer />
+        <AppWrapper>
+          <Navbar />
+          {children}
+          <Footer />
+        </AppWrapper>
       </body>
     </html>
   );
