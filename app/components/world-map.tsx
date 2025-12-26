@@ -67,16 +67,16 @@ export default function WorldMap({ onMarkerClick }: { onMarkerClick?: (wildlife:
       <MapContainer
         center={[20, 0]}
         zoom={3}
-        minZoom={3}        maxBounds={[[-90, -180], [90, 180]]}
+               maxBounds={[[-90, -180], [90, 180]]}
         maxBoundsViscosity={1.0}
         zoomControl={false}
         className="w-full h-full rounded-2xl"
         style={{ minHeight: "100%" }}
       >
-        {/* CartoDB Voyager - Clean modern style */}
+        {/* CartoDB Positron (Light) */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-          url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
+          url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
         {wildlifeLocations.map((wildlife, index) => (
