@@ -4,18 +4,21 @@ import Image from "next/image";
 
 // Mock recent entries (replace with real data fetching)
 const recentEntries = [
-  { id: 1, image: "/animal-images/african-elephant.png", author: "David Okoye", title: "African Elephant" },
-  { id: 2, image: "/animal-images/bald-eagle.png", author: "Emily Johnson", title: "Bald Eagle" },
-  { id: 3, image: "/animal-images/giant-panda.png", author: "Li Wei", title: "Giant Panda" },
-  { id: 4, image: "/animal-images/red-kangaroo.png", author: "Sophie Brown", title: "Red Kangaroo" },
-  { id: 5, image: "/animal-images/king-cobra.png", author: "Carlos Silva", title: "King Cobra" },
-  { id: 6, image: "/animal-images/saltwater-crocodile.png", author: "Jack Thompson", title: "Saltwater Crocodile" },
-  { id: 7, image: "/animal-images/scarlet-macaw.png", author: "Maria Gonzalez", title: "Scarlet Macaw" },
-  { id: 8, image: "/animal-images/poison-dart-frog.png", author: "Luis Ramirez", title: "Poison Dart Frog" },
-  { id: 9, image: "/animal-images/cheetah.png", author: "Anna Wanjiku", title: "Cheetah" },
-    { id: 10, image: "/animal-images/monarch-butterfly.png", author: "Sarah Fields", title: "Monarch Butterfly" },
-  { id: 11, image: "/animal-images/black-widow-spider.png", author: "Tom Weaver", title: "Black Widow Spider" },
-  { id: 12, image: "/animal-images/blue-crab.png", author: "River Smith", title: "Blue Crab" },
+  { id: 4, image: "/animal-images/poison-dart-frog.png", author: "Luis Ramirez", title: "Poison Dart Frog" },
+  { id: 8, image: "/animal-images/giant-panda.png", author: "Li Wei", title: "Giant Panda" },
+
+  { id: 2, image: "/animal-images/saltwater-crocodile.png", author: "Jack Thompson", title: "Saltwater Crocodile" },
+  { id: 3, image: "/animal-images/scarlet-macaw.png", author: "Maria Gonzalez", title: "Scarlet Macaw" },
+  { id: 5, image: "/animal-images/cheetah.png", author: "Anna Wanjiku", title: "Cheetah" },
+  { id: 6, image: "/animal-images/african-elephant.png", author: "David Okoye", title: "African Elephant" },
+  { id: 7, image: "/animal-images/bald-eagle.png", author: "Emily Johnson", title: "Bald Eagle" },
+
+  { id: 1, image: "/animal-images/king-cobra.png", author: "Carlos Silva", title: "King Cobra" },
+
+  { id: 9, image: "/animal-images/red-kangaroo.png", author: "Sophie Brown", title: "Red Kangaroo" },
+//   { id: 10, image: "/animal-images/monarch-butterfly.png", author: "Sarah Fields", title: "Monarch Butterfly" },
+//   { id: 11, image: "/animal-images/black-widow-spider.png", author: "Tom Weaver", title: "Black Widow Spider" },
+//   { id: 12, image: "/animal-images/blue-crab.png", author: "River Smith", title: "Blue Crab" },
 ];
 
 export default function NewEntryLoader() {
@@ -29,7 +32,7 @@ export default function NewEntryLoader() {
               src={entry.image}
               alt={entry.title}
               fill
-              className="object-cover"
+              className="object-cover scale-100 hover:scale-110 transition-transform duration-500"
             />
             <div className="absolute bottom-0 left-0 right-0  bg-opacity-50 text-white text-xs p-2">
               <p className="font-semibold">{entry.title}</p>
@@ -44,12 +47,39 @@ export default function NewEntryLoader() {
           0% {
             transform: translateX(0);
           }
-          100% {
+          10% {
             transform: translateX(-50%);
+          }
+          20% {
+            transform: translateX(-100%);
+          }
+          30% {
+            transform: translateX(-150%);
+          }
+          40% {
+            transform: translateX(-200%);
+          }
+          50% {
+            transform: translateX(-250%);
+          }
+          60% {
+            transform: translateX(-300%);
+          }
+          70% {
+            transform: translateX(-350%);
+          }
+          80% {
+            transform: translateX(-400%);
+          }
+          90% {
+            transform: translateX(-450%);
+          }
+          100% {
+            transform: translateX(-500%);
           }
         }
         .animate-scroll {
-          animation: scroll 60s linear infinite;
+          animation: scroll 90s linear infinite;
         }
       `}</style>
     </div>
