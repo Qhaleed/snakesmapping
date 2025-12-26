@@ -201,41 +201,41 @@ export default function WorldMap({ onMarkerClick, showLegend }: { onMarkerClick?
       </MapContainer>
 
       {showLegend && (
-        <div className="fixed right-4 top-1/2 transform -translate-y-1/2 bg-white/10 p-4 rounded-lg shadow-lg z-[1000] backdrop-blur-xl border border-white/20 h-96 w-fit overflow-y-auto text-xl">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)] rounded-lg" />
-          <h3 className="font-bold mb-2 text-white drop-shadow-sm relative z-10">Legend</h3>
-          <div className="space-y-1 text-lg relative z-10">
+        <div className="fixed right-4 top-1/3  transform -translate-y-1/2 bg-white/10 p-4 rounded-lg shadow-lg z-[1000] backdrop-blur-xl border-black bg-red-900 border-white/20 h-96 w-fit overflow-y-auto text-xl">
+          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to bottom, rgba(0,0,0), transparent)] rounded-lg border-black" />
+          <h3 className="font-bold mb-2 text-black drop-shadow-sm relative z-10">Legend</h3>
+          <div className="space-y-1 text-lg  relative z-10">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
-              <span className="text-white">Reptilia</span>
+              <span className="text-black">Reptilia</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-orange-500 rounded-full mr-2"></div>
-              <span className="text-white">Mammalia</span>
+              <span className="text-black">Mammalia</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-blue-500 rounded-full mr-2"></div>
-              <span className="text-white">Aves</span>
+              <span className="text-black">Aves</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-green-500 rounded-full mr-2"></div>
-              <span className="text-white">Amphibia</span>
+              <span className="text-black">Amphibia</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-purple-500 rounded-full mr-2"></div>
-              <span className="text-white">Pisces</span>
+              <span className="text-black">Pisces</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
-              <span className="text-white">Insecta</span>
+              <span className="text-black">Insecta</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-pink-500 rounded-full mr-2"></div>
-              <span className="text-white">Arachnida</span>
+              <span className="text-black">Arachnida</span>
             </div>
             <div className="flex items-center">
               <div className="w-4 h-4 bg-cyan-500 rounded-full mr-2"></div>
-              <span className="text-white">Crustacea</span>
+              <span className="text-black">Crustacea</span>
             </div>
           </div>
         </div>
