@@ -17,7 +17,7 @@ export default function Navbar() {
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to bottom, rgba(0,0,0,0.1), transparent)]" />
 
         <h1 className="text-xl font-bold text-white drop-shadow-sm">
-          WildlifeMapping
+          MyWildlife
         </h1>
 
         <div className="flex items-center gap-10 text-white">

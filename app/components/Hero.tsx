@@ -16,8 +16,8 @@ export default function Hero() {
           <h1 className="text-3xl  sm:text-4xl md:text-5xl">
             <span className="font-bold">WildlifePhotography:</span> Global Wildlife
           </h1>
-          <h2 className="text-lg sm:text-xl md:text-2xl">
-            Discover, identify, and map wildlife worldwide
+          <h2 className="text-lg sm:text-xl md:text-2xl text-gray-300">
+            A websystem database for wildlife enthusiasts to discover, identify,<br></br> and map wildlife worldwide
           </h2>
 
           <Search></Search>
