@@ -167,22 +167,29 @@ const wildlifeLocations = [
 function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?: (wildlife: any) => void; setPrevZoom: (zoom: number) => void; setPrevCenter: (center: L.LatLng) => void }) {
   const map = useMap();
   const [zoomLevel, setZoomLevel] = useState(3);
+  const [hideAllMarkers, setHideAllMarkers] = useState(false);
 
   useEffect(() => {
     const onZoom = () => setZoomLevel(map.getZoom());
+    const onZoomEnd = () => {
+      setZoomLevel(map.getZoom());
+      setHideAllMarkers(false); // Show all markers again after zoom
+    };
     map.on('zoom', onZoom);
-    map.on('zoomend', onZoom);
+    map.on('zoomend', onZoomEnd);
     return () => {
       map.off('zoom', onZoom);
-      map.off('zoomend', onZoom);
+      map.off('zoomend', onZoomEnd);
     };
   }, [map]);
+
+  if (hideAllMarkers) return null; // Hide all markers
 
   return (
     <>
       {wildlifeLocations.map((wildlife, index) => {
         const colors = colorMap[wildlife.taxo] || { color: "gray", fillColor: "gray" };
-        const radius = 8 * Math.pow(0.9, zoomLevel - 3);
+        const radius = 5 * Math.pow(0.9, zoomLevel - 3);
         return (
           <CircleMarker
             key={index}
@@ -193,9 +200,10 @@ function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?
             fillOpacity={0.8}
             eventHandlers={{
               click: () => {
+                setHideAllMarkers(true); // Hide all markers immediately
                 setPrevZoom(map.getZoom());
                 setPrevCenter(map.getCenter());
-                map.flyTo(wildlife.position, 8);
+                map.flyTo(wildlife.position, 12);
                 setTimeout(() => onMarkerClick?.(wildlife), 1000);
               },
             }}
