@@ -14,7 +14,7 @@ export default function Hero() {
 
         <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 text-center text-white drop-shadow-lg">
           <h1 className="text-3xl  sm:text-4xl md:text-5xl">
-            <span className="font-bold">WildlifeMapping:</span> Global Wildlife
+            <span className="font-bold">WildlifePhotography:</span> Global Wildlife
           </h1>
           <h2 className="text-lg sm:text-xl md:text-2xl">
             Discover, identify, and map wildlife worldwide
