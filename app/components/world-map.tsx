@@ -1,6 +1,7 @@
 "use client";
 
-import { MapContainer, TileLayer, CircleMarker, Popup } from "react-leaflet";
+import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
+import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -163,7 +164,71 @@ const wildlifeLocations = [
   },
 ];
 
-export default function WorldMap({ onMarkerClick, showLegend }: { onMarkerClick?: (wildlife: any) => void; showLegend?: boolean }) {
+function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?: (wildlife: any) => void; setPrevZoom: (zoom: number) => void; setPrevCenter: (center: L.LatLng) => void }) {
+  const map = useMap();
+  const [zoomLevel, setZoomLevel] = useState(3);
+
+  useEffect(() => {
+    const onZoom = () => setZoomLevel(map.getZoom());
+    map.on('zoom', onZoom);
+    map.on('zoomend', onZoom);
+    return () => {
+      map.off('zoom', onZoom);
+      map.off('zoomend', onZoom);
+    };
+  }, [map]);
+
+  return (
+    <>
+      {wildlifeLocations.map((wildlife, index) => {
+        const colors = colorMap[wildlife.taxo] || { color: "gray", fillColor: "gray" };
+        const radius = 8 * Math.pow(0.9, zoomLevel - 3);
+        return (
+          <CircleMarker
+            key={index}
+            center={wildlife.position}
+            radius={radius}
+            color={colors.color}
+            fillColor={colors.fillColor}
+            fillOpacity={0.8}
+            eventHandlers={{
+              click: () => {
+                setPrevZoom(map.getZoom());
+                setPrevCenter(map.getCenter());
+                map.flyTo(wildlife.position, 8);
+                setTimeout(() => onMarkerClick?.(wildlife), 1000);
+              },
+            }}
+          />
+        );
+      })}
+    </>
+  );
+}
+
+function MapRefSetter({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null> }) {
+  const map = useMap();
+  useEffect(() => {
+    mapRef.current = map;
+  }, [map, mapRef]);
+  return null;
+}
+
+const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wildlife: any) => void; showLegend?: boolean }>(({ onMarkerClick, showLegend }, ref) => {
+  const mapRef = useRef<L.Map | null>(null);
+  const [prevZoom, setPrevZoom] = useState<number | null>(null);
+  const [prevCenter, setPrevCenter] = useState<L.LatLng | null>(null);
+
+  const handleZoomOut = () => {
+    if (mapRef.current && prevZoom !== null && prevCenter) {
+      mapRef.current.flyTo(prevCenter, prevZoom);
+    }
+  };
+
+  useImperativeHandle(ref, () => ({
+    handleZoomOut,
+  }));
+
   return (
     <div className="relative w-full h-full">
 
@@ -182,22 +247,8 @@ export default function WorldMap({ onMarkerClick, showLegend }: { onMarkerClick?
           url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
         />
 
-        {wildlifeLocations.map((wildlife, index) => {
-          const colors = colorMap[wildlife.taxo] || { color: "gray", fillColor: "gray" };
-          return (
-            <CircleMarker
-              key={index}
-              center={wildlife.position}
-              radius={8}
-              color={colors.color}
-              fillColor={colors.fillColor}
-              fillOpacity={0.8}
-              eventHandlers={{
-                click: () => onMarkerClick?.(wildlife),
-              }}
-            />
-          );
-        })}
+        <MapRefSetter mapRef={mapRef} />
+        <Markers onMarkerClick={onMarkerClick} setPrevZoom={setPrevZoom} setPrevCenter={setPrevCenter} />
       </MapContainer>
 
       {showLegend && (
@@ -242,4 +293,7 @@ export default function WorldMap({ onMarkerClick, showLegend }: { onMarkerClick?
       )}
     </div>
   );
-}
+});
+
+export default WorldMap;
+

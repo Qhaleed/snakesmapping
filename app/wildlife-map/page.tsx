@@ -1,29 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import dynamic from "next/dynamic";
+import { useState, useRef } from "react";
 import BackButton from "../components/back-button";
 import SearchModal from "../components/search-modal";
 import WildlifeDetailModal from "../components/wildlife-detail-modal";
-
-// Dynamic import to avoid SSR issues with Leaflet
-const WorldMap = dynamic(() => import("../components/world-map"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full bg-gray-200 animate-pulse" />
-  ),
-});
+import WorldMap from "../components/world-map";
 
 export default function WildlifeMap() {
   const [searchAnimal, setSearchAnimal] = useState("");
   const [selectedWildlife, setSelectedWildlife] = useState<any>(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const worldMapRef = useRef<{ handleZoomOut: () => void } | null>(null);
 
   const handleMarkerClick = (wildlife: any) => {
     setSelectedWildlife(wildlife);
+    setModalVisible(true);
   };
 
   const closeModal = () => {
-    setSelectedWildlife(null);
+    setModalVisible(false);
+    worldMapRef.current?.handleZoomOut();
+    setTimeout(() => setSelectedWildlife(null), 1000); // allow fade out
   };
 
   return (
@@ -32,14 +29,14 @@ export default function WildlifeMap() {
 
       {/* Main Map */}
       <div className="w-full h-full">
-        <WorldMap onMarkerClick={handleMarkerClick} showLegend={true} />
+        <WorldMap ref={worldMapRef} onMarkerClick={handleMarkerClick} showLegend={true} />
       </div>
 
       {/* Search Modal */}
       <SearchModal searchAnimal={searchAnimal} setSearchAnimal={setSearchAnimal} />
 
       {/* Wildlife Detail Modal */}
-      <WildlifeDetailModal selectedWildlife={selectedWildlife} closeModal={closeModal} />
+      <WildlifeDetailModal selectedWildlife={selectedWildlife} closeModal={closeModal} visible={modalVisible} />
     </div>
   );
 }

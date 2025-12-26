@@ -1,13 +1,5 @@
 import HorizontalWildlifeCard from "./horizontal-wildlife-card";
-import dynamic from "next/dynamic";
-
-// Dynamic import to avoid SSR issues with Leaflet
-const WorldMap = dynamic(() => import("./world-map"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-full rounded-2xl bg-gray-200 animate-pulse" />
-  ),
-});
+import WorldMap from "./world-map";
 
 export default function LowerBox() {
   return (

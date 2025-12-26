@@ -5,14 +5,15 @@ import Image from "next/image";
 interface WildlifeDetailModalProps {
   selectedWildlife: any;
   closeModal: () => void;
+  visible: boolean;
 }
 
-export default function WildlifeDetailModal({ selectedWildlife, closeModal }: WildlifeDetailModalProps) {
+export default function WildlifeDetailModal({ selectedWildlife, closeModal, visible }: WildlifeDetailModalProps) {
   if (!selectedWildlife) return null;
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center z-[2000]" onClick={closeModal}>
-      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4 shadow-xl" onClick={(e) => e.stopPropagation()}>
+    <div className={`fixed left-4 top-4 z-[2000] transition-opacity duration-1000 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+      <div className="bg-white rounded-lg p-6 max-w-md shadow-xl">
         <h2 className="text-xl font-bold text-black mb-4">{selectedWildlife.title}</h2>
         <div className="mb-4">
           <Image
