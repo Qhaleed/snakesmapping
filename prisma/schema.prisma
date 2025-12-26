@@ -10,21 +10,101 @@ datasource db {
   provider = "postgresql"
 }
 
-// Example models
+// Enums
+
+enum Taxonomy {
+  Mammalia
+  Aves
+  Reptilia
+  Amphibia
+  Pisces
+  Insecta
+  Arachnida
+  Crustacea
+}
+
+// Models
 
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  posts Post[]
+  id             Int      @id @default(autoincrement())
+  email          String   @unique @db.VarChar(255)
+  name           String?  @db.VarChar(100)
+  password       String?  // Temporarily optional for migration; make required after setting passwords
+  verified       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt @default(now())
+  posts          Post[]
+  likes          Like[]
+  followers      Follow[] @relation("Following")
+  following      Follow[] @relation("Follower")
+  comments       Comment[]
+  likesTotal     Int      @default(0)
+  followerCount  Int      @default(0)
+  followingCount Int      @default(0)
+  contributions  Int      @default(0)
+  highestRank    Int      @default(0)
+
+  @@index([email])
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  content   String?
-  image     String?
-  published Boolean @default(false)
-  author    User    @relation(fields: [authorId], references: [id])
+  id            Int       @id @default(autoincrement())
+  title         String    @db.VarChar(200)
+  content       String?   @db.Text
+  image         String?   @db.VarChar(500)
+  published     Boolean   @default(false)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt @default(now())
+  author        User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  authorId      Int
+  likes         Like[]
+  comments      Comment[]
+  likeCount     Int       @default(0)
+  location      String?   @db.VarChar(255)
+  coordinatesX  Float?
+  coordinatesY  Float?
+  region        String?   @db.VarChar(100)
+  taxonomy      Taxonomy  @default(Mammalia)
+
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([taxonomy])
+}
+
+model Like {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId Int
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model Follow {
+  id          Int  @id @default(autoincrement())
+  follower    User @relation("Follower", fields: [followerId], references: [id], onDelete: Cascade)
+  followerId  Int
+  following   User @relation("Following", fields: [followingId], references: [id], onDelete: Cascade)
+  followingId Int
+
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId  Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+
+  @@index([authorId])
+  @@index([postId])
 }
