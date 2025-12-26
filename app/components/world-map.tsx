@@ -1,9 +1,12 @@
 "use client";
 
 import { useState, useRef, useEffect, forwardRef, useImperativeHandle } from "react";
-import { MapContainer, TileLayer, CircleMarker, Popup, useMap } from "react-leaflet";
+import { MapContainer, TileLayer, CircleMarker, Tooltip, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+import MarkerClusterGroup from 'react-leaflet-markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 
 // Color map based on taxonomy
 const colorMap: Record<string, { color: string; fillColor: string }> = {
@@ -162,12 +165,220 @@ const wildlifeLocations = [
     image: "/animal-images/blue-crab.png",
     taxo: "crustacea",
   },
+  {
+    // Philippines - Philippine Eagle
+    position: [13.5, 121.0] as [number, number],
+    title: "Philippine Eagle",
+    location: "Mindanao, Philippines",
+    author: "Maria Santos",
+    description: "The majestic Philippine eagle soaring over the rainforests of Mindanao.",
+    date: "Dec 10, 2025",
+    image: "/animal-images/philippine-eagle.png",
+    taxo: "bird",
+  },
+  {
+    // Philippines - Philippine Tarsier
+    position: [11.2, 124.0] as [number, number],
+    title: "Philippine Tarsier",
+    location: "Bohol, Philippines",
+    author: "Juan dela Cruz",
+    description: "Tiny Philippine tarsier spotted in the wild on Bohol island.",
+    date: "Nov 22, 2025",
+    image: "/animal-images/philippine-tarsier.png",
+    taxo: "mammal",
+  },
+  {
+    // Philippines - Tamaraw
+    position: [12.5, 124.5] as [number, number],
+    title: "Tamaraw",
+    location: "Mindoro, Philippines",
+    author: "Ana Reyes",
+    description: "Endangered tamaraw grazing in the grasslands of Mindoro.",
+    date: "Oct 15, 2025",
+    image: "/animal-images/tamaraw.png",
+    taxo: "mammal",
+  },
+  {
+    // Philippines - Palawan Peacock Pheasant
+    position: [9.8, 118.7] as [number, number],
+    title: "Palawan Peacock Pheasant",
+    location: "Palawan, Philippines",
+    author: "Carlos Mendoza",
+    description: "Vibrant Palawan peacock pheasant displaying its plumage in the jungle.",
+    date: "Sep 8, 2025",
+    image: "/animal-images/palawan-peacock-pheasant.png",
+    taxo: "bird",
+  },
+  {
+    // Philippines - Philippine Crocodile
+    position: [10.5, 119.0] as [number, number],
+    title: "Philippine Crocodile",
+    location: "Palawan, Philippines",
+    author: "Luz Fernandez",
+    description: "Rare Philippine crocodile basking in the sun near a river.",
+    date: "Aug 20, 2025",
+    image: "/animal-images/philippine-crocodile.png",
+    taxo: "reptile",
+  },
+  {
+    // Philippines - Dugong
+    position: [11.0, 119.5] as [number, number],
+    title: "Dugong",
+    location: "Palawan, Philippines",
+    author: "Pedro Garcia",
+    description: "Dugong swimming gracefully in the coastal waters of Palawan.",
+    date: "Jul 12, 2025",
+    image: "/animal-images/dugong.png",
+    taxo: "mammal",
+  },
+  {
+    // Philippines - Whale Shark
+    position: [9.5, 118.5] as [number, number],
+    title: "Whale Shark",
+    location: "Donsol, Philippines",
+    author: "Rosa Lim",
+    description: "Massive whale shark spotted during the annual migration in Donsol.",
+    date: "Jun 5, 2025",
+    image: "/animal-images/whale-shark.png",
+    taxo: "pisces",
+  },
+  {
+    // Philippines - Calamian Deer
+    position: [12.0, 120.0] as [number, number],
+    title: "Calamian Deer",
+    location: "Busuanga, Philippines",
+    author: "Miguel Torres",
+    description: "Calamian deer foraging in the forests of Busuanga island.",
+    date: "May 18, 2025",
+    image: "/animal-images/calamian-deer.png",
+    taxo: "mammal",
+  },
+  {
+    // Philippines - Philippine Flying Lemur
+    position: [14.0, 121.5] as [number, number],
+    title: "Philippine Flying Lemur",
+    location: "Luzon, Philippines",
+    author: "Elena Castro",
+    description: "Philippine flying lemur gliding between trees in Luzon.",
+    date: "Apr 10, 2025",
+    image: "/animal-images/philippine-flying-lemur.png",
+    taxo: "mammal",
+  },
+  {
+    // Philippines - Visayan Warty Pig
+    position: [10.8, 124.2] as [number, number],
+    title: "Visayan Warty Pig",
+    location: "Negros, Philippines",
+    author: "Fernando Aquino",
+    description: "Visayan warty pig rooting in the undergrowth on Negros island.",
+    date: "Mar 25, 2025",
+    image: "/animal-images/visayan-warty-pig.png",
+    taxo: "mammal",
+  },
+  {
+    // Madagascar - Fossa
+    position: [-18.9, 47.5] as [number, number],
+    title: "Fossa",
+    location: "Madagascar",
+    author: "Sophie Dubois",
+    description: "Agile fossa hunting in the forests of Madagascar.",
+    date: "Feb 14, 2025",
+    image: "/animal-images/fossa.png",
+    taxo: "mammal",
+  },
+  {
+    // Antarctica - Emperor Penguin
+    position: [-77.8, 166.7] as [number, number],
+    title: "Emperor Penguin",
+    location: "Antarctica",
+    author: "Dr. Emma Wilson",
+    description: "Emperor penguin colony thriving in the harsh Antarctic environment.",
+    date: "Jan 5, 2025",
+    image: "/animal-images/emperor-penguin.png",
+    taxo: "bird",
+  },
+  {
+    // Galapagos - Marine Iguana
+    position: [-0.7, -90.3] as [number, number],
+    title: "Marine Iguana",
+    location: "Galapagos Islands, Ecuador",
+    author: "Pablo Ramirez",
+    description: "Marine iguana basking on the rocks in the Galapagos.",
+    date: "Dec 20, 2024",
+    image: "/animal-images/marine-iguana.png",
+    taxo: "reptile",
+  },
+  {
+    // Borneo - Orangutan
+    position: [1.5, 110.3] as [number, number],
+    title: "Orangutan",
+    location: "Borneo, Indonesia",
+    author: "Ahmad bin Hassan",
+    description: "Orangutan swinging through the trees in Borneo rainforest.",
+    date: "Nov 8, 2024",
+    image: "/animal-images/orangutan.png",
+    taxo: "mammal",
+  },
+  {
+    // Himalayas - Snow Leopard
+    position: [35.0, 75.0] as [number, number],
+    title: "Snow Leopard",
+    location: "Himalayas, Nepal",
+    author: "Tenzin Dorje",
+    description: "Elusive snow leopard prowling the high mountains of the Himalayas.",
+    date: "Oct 12, 2024",
+    image: "/animal-images/snow-leopard.png",
+    taxo: "mammal",
+  },
+  {
+    // Amazon - Poison Dart Frog
+    position: [-4.0, -63.0] as [number, number],
+    title: "Poison Dart Frog",
+    location: "Amazon Rainforest, Peru",
+    author: "Isabella Morales",
+    description: "Colorful poison dart frog in the Peruvian Amazon.",
+    date: "Sep 3, 2024",
+    image: "/animal-images/poison-dart-frog.png",
+    taxo: "amphibian",
+  },
+  {
+    // Sahara - Fennec Fox
+    position: [25.0, 10.0] as [number, number],
+    title: "Fennec Fox",
+    location: "Sahara Desert, Morocco",
+    author: "Fatima Alami",
+    description: "Fennec fox with large ears adapting to the desert heat.",
+    date: "Aug 15, 2024",
+    image: "/animal-images/fennec-fox.png",
+    taxo: "mammal",
+  },
+  {
+    // Great Barrier Reef - Clownfish
+    position: [-18.3, 147.7] as [number, number],
+    title: "Clownfish",
+    location: "Great Barrier Reef, Australia",
+    author: "Liam O'Sullivan",
+    description: "Clownfish hiding in an anemone on the Great Barrier Reef.",
+    date: "Jul 22, 2024",
+    image: "/animal-images/clownfish.png",
+    taxo: "pisces",
+  },
+  {
+    // Yellowstone - Grizzly Bear
+    position: [44.4, -110.6] as [number, number],
+    title: "Grizzly Bear",
+    location: "Yellowstone, USA",
+    author: "John Anderson",
+    description: "Grizzly bear fishing in Yellowstone National Park.",
+    date: "Jun 10, 2024",
+    image: "/animal-images/grizzly-bear.png",
+    taxo: "mammal",
+  },
 ];
 
-function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?: (wildlife: any) => void; setPrevZoom: (zoom: number) => void; setPrevCenter: (center: L.LatLng) => void }) {
+function Markers({ locations, onMarkerClick, setPrevZoom, setPrevCenter, hideAllMarkers, setHideAllMarkers }: { locations: typeof wildlifeLocations; onMarkerClick?: (wildlife: any) => void; setPrevZoom: (zoom: number) => void; setPrevCenter: (center: L.LatLng) => void; hideAllMarkers: boolean; setHideAllMarkers: (hide: boolean) => void }) {
   const map = useMap();
   const [zoomLevel, setZoomLevel] = useState(3);
-  const [hideAllMarkers, setHideAllMarkers] = useState(false);
 
   useEffect(() => {
     const onZoom = () => setZoomLevel(map.getZoom());
@@ -181,15 +392,15 @@ function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?
       map.off('zoom', onZoom);
       map.off('zoomend', onZoomEnd);
     };
-  }, [map]);
+  }, [map, setHideAllMarkers]);
 
   if (hideAllMarkers) return null; // Hide all markers
 
   return (
     <>
-      {wildlifeLocations.map((wildlife, index) => {
+      {locations.map((wildlife, index) => {
         const colors = colorMap[wildlife.taxo] || { color: "gray", fillColor: "gray" };
-        const radius = 5 * Math.pow(0.9, zoomLevel - 3);
+        const radius = 5 + (zoomLevel - 3) * 0.4;
         return (
           <CircleMarker
             key={index}
@@ -203,11 +414,14 @@ function Markers({ onMarkerClick, setPrevZoom, setPrevCenter }: { onMarkerClick?
                 setHideAllMarkers(true); // Hide all markers immediately
                 setPrevZoom(map.getZoom());
                 setPrevCenter(map.getCenter());
-                map.flyTo(wildlife.position, 12);
+                map.flyTo(wildlife.position, 12, { duration: 1.5 });
                 setTimeout(() => onMarkerClick?.(wildlife), 1000);
               },
             }}
-          />
+          >
+            {/* @ts-ignore */}
+            <Tooltip direction="top" style={{ backgroundColor: 'rgba(0,0,0,0.9)', color: 'white', fontWeight: 'bold', padding: '8px 12px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.5)', fontSize: '16px', border: '1px solid rgba(255,255,255,0.3)' }}>{wildlife.title}</Tooltip>
+          </CircleMarker>
         );
       })}
     </>
@@ -225,11 +439,10 @@ function MapRefSetter({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null>
 const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wildlife: any) => void; showLegend?: boolean }>(({ onMarkerClick, showLegend }, ref) => {
   const mapRef = useRef<L.Map | null>(null);
   const [prevZoom, setPrevZoom] = useState<number | null>(null);
-  const [prevCenter, setPrevCenter] = useState<L.LatLng | null>(null);
-
+  const [prevCenter, setPrevCenter] = useState<L.LatLng | null>(null);  const [hideAllMarkers, setHideAllMarkers] = useState(false);
   const handleZoomOut = () => {
     if (mapRef.current && prevZoom !== null && prevCenter) {
-      mapRef.current.flyTo(prevCenter, prevZoom);
+      mapRef.current.flyTo(prevCenter, prevZoom, { duration: 0.5 });
     }
   };
 
@@ -256,7 +469,28 @@ const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wi
         />
 
         <MapRefSetter mapRef={mapRef} />
-        <Markers onMarkerClick={onMarkerClick} setPrevZoom={setPrevZoom} setPrevCenter={setPrevCenter} />
+        {Object.entries(
+          wildlifeLocations.reduce((acc, loc) => {
+            if (!acc[loc.taxo]) acc[loc.taxo] = [];
+            acc[loc.taxo].push(loc);
+            return acc;
+          }, {} as Record<string, typeof wildlifeLocations>)
+        ).map(([taxo, locs]) => (
+          <MarkerClusterGroup
+            key={taxo}
+            iconCreateFunction={(cluster: any) => {
+              const count = cluster.getChildCount();
+              const color = colorMap[taxo]?.color || 'gray';
+              return L.divIcon({
+                html: `<div style="background-color: ${color}; color: white; border-radius: 50%; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; font-weight: bold;">${count}</div>`,
+                className: 'custom-cluster-icon',
+                iconSize: [30, 30],
+              });
+            }}
+          >
+            <Markers locations={locs} onMarkerClick={onMarkerClick} setPrevZoom={setPrevZoom} setPrevCenter={setPrevCenter} hideAllMarkers={hideAllMarkers} setHideAllMarkers={setHideAllMarkers} />
+          </MarkerClusterGroup>
+        ))}
       </MapContainer>
 
       {showLegend && (
