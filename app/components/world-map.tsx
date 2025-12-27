@@ -436,22 +436,36 @@ function MapRefSetter({ mapRef }: { mapRef: React.MutableRefObject<L.Map | null>
   return null;
 }
 
-const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wildlife: any) => void; showLegend?: boolean }>(({ onMarkerClick, showLegend }, ref) => {
+const WorldMap = forwardRef<{ handleZoomOut: () => void; flyTo: (lat: number, lng: number, zoom?: number) => void }, { onMarkerClick?: (wildlife: any) => void; showLegend?: boolean; filteredLocations?: typeof wildlifeLocations }>(({ onMarkerClick, showLegend, filteredLocations }, ref) => {
   const mapRef = useRef<L.Map | null>(null);
   const [prevZoom, setPrevZoom] = useState<number | null>(null);
   const [prevCenter, setPrevCenter] = useState<L.LatLng | null>(null);  const [hideAllMarkers, setHideAllMarkers] = useState(false);
+  const [legendVisible, setLegendVisible] = useState(false);
   const handleZoomOut = () => {
     if (mapRef.current && prevZoom !== null && prevCenter) {
       mapRef.current.flyTo(prevCenter, prevZoom, { duration: 0.5 });
     }
   };
+  const flyTo = (lat: number, lng: number, zoom: number = 6) => {
+    if (mapRef.current) {
+      mapRef.current.flyTo([lat, lng], zoom, { duration: 1.5 });
+    }
+  };
 
   useImperativeHandle(ref, () => ({
     handleZoomOut,
+    flyTo,
   }));
 
   return (
     <div className="relative w-full h-full">
+      <button
+        className="absolute top-4 right-4 z-[1000] bg-white/20 backdrop-blur-sm p-2 rounded-full text-black font-bold hover:bg-white/30 transition-colors"
+        onClick={() => setLegendVisible(!legendVisible)}
+        title="legend"
+      >
+        i
+      </button>
 
       <MapContainer
         center={[20, 0]}
@@ -470,7 +484,7 @@ const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wi
 
         <MapRefSetter mapRef={mapRef} />
         {Object.entries(
-          wildlifeLocations.reduce((acc, loc) => {
+          (filteredLocations || wildlifeLocations).reduce((acc, loc) => {
             if (!acc[loc.taxo]) acc[loc.taxo] = [];
             acc[loc.taxo].push(loc);
             return acc;
@@ -493,11 +507,9 @@ const WorldMap = forwardRef<{ handleZoomOut: () => void }, { onMarkerClick?: (wi
         ))}
       </MapContainer>
 
-      {showLegend && (
-        <div className="fixed right-4 top-1/3  transform -translate-y-1/2 bg-white/10 p-4 rounded-lg shadow-lg z-[1000] backdrop-blur-xl border-black bg-red-900 border-white/20 h-96 w-fit overflow-y-auto text-xl">
-          <div className="pointer-events-none absolute inset-0 -z-10 bg-[linear-gradient(to bottom, rgba(0,0,0), transparent)] rounded-lg border-black" />
-          <h3 className="font-bold mb-2 text-black drop-shadow-sm relative z-10">Legend</h3>
-          <div className="space-y-1 text-lg  relative z-10">
+      {legendVisible && (
+        <div className="fixed top-4 right-15 transform z-[1000] p-2 rounded-lg">
+          <div className="flex flex-row space-x-4 text-lg">
             <div className="flex items-center">
               <div className="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
               <span className="text-black">Reptilia</span>

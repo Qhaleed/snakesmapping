@@ -56,8 +56,8 @@ export default function WildlifeDetailModal({ selectedWildlife, closeModal, visi
             </svg>
             Like
           </button>
-          <button className="group flex-1 bg-white text-black py-2 rounded-lg  flex items-center justify-center gap-2 hover:cursor-pointer" onClick={() => setShowCommentModal(!showCommentModal)}>
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:fill-blue-500">
+          <button className="group flex-1 bg-white text-black py-2 rounded-lg  flex items-center justify-center gap-2 hover:cursor-pointer " onClick={() => setShowCommentModal(!showCommentModal)}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="group-hover:fill-blue-500 transition-color duration-3000">
               <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
             </svg>
             Comment
@@ -65,7 +65,7 @@ export default function WildlifeDetailModal({ selectedWildlife, closeModal, visi
         </div>
         <button
           onClick={() => { setShowCommentModal(false); closeModal(); }}
-          className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600"
+          className="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 hover:cursor-pointer "
         >
           Close
         </button>
