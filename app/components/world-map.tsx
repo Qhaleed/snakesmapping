@@ -452,9 +452,16 @@ const WorldMap = forwardRef<{ handleZoomOut: () => void; flyTo: (lat: number, ln
     }
   };
 
+  const resetView = () => {
+    if (mapRef.current) {
+      mapRef.current.flyTo([20, 0], 3, { duration: 1.5 });
+    }
+  };
+
   useImperativeHandle(ref, () => ({
     handleZoomOut,
     flyTo,
+    resetView,
   }));
 
   return (

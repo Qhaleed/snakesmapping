@@ -331,14 +331,20 @@ const wildlifeLocations = [
 ];
 
 export default function WildlifeMap() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [searchType, setSearchType] = useState("animal");
+  const [animalQuery, setAnimalQuery] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [currentResultIndex, setCurrentResultIndex] = useState(0);
+  
+  // Filter states
+  const [taxonomyFilter, setTaxonomyFilter] = useState("");
+  const [authorFilter, setAuthorFilter] = useState("");
+  const [regionFilter, setRegionFilter] = useState("");
+  const [countryFilter, setCountryFilter] = useState("");
   const [filteredLocations, setFilteredLocations] = useState<any[] | null>(null);
+  
   const [selectedWildlife, setSelectedWildlife] = useState<any>(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const worldMapRef = useRef<{ handleZoomOut: () => void; flyTo: (lat: number, lng: number, zoom?: number) => void } | null>(null);
+  const worldMapRef = useRef<{ handleZoomOut: () => void; flyTo: (lat: number, lng: number, zoom?: number) => void; resetView: () => void } | null>(null);
 
   useEffect(() => {
     if (searchResults.length > 0 && currentResultIndex < searchResults.length) {
@@ -354,43 +360,82 @@ export default function WildlifeMap() {
     setModalVisible(true);
   };
 
-  const onSearch = () => {
-    if (!searchQuery.trim()) return;
+  const onAnimalSearch = () => {
+    if (!animalQuery.trim()) return;
 
-    const query = searchQuery.toLowerCase().trim();
+    const query = animalQuery.toLowerCase().trim();
+    
+    // Start with all locations or filtered locations if filters are active
+    let baseLocations = wildlifeLocations;
+    if (filteredLocations) {
+      baseLocations = filteredLocations;
+    }
+    
+    const results = baseLocations.filter(loc => 
+      loc.title.toLowerCase().includes(query)
+    );
+    
+    setSearchResults(results);
+    setCurrentResultIndex(0);
+    
+    if (results.length > 0) {
+      const first = results[0];
+      worldMapRef.current?.flyTo(first.position[0], first.position[1], 10);
+      handleMarkerClick(first);
+    }
+  };
 
-    if (searchType === 'animal') {
-      const results = wildlifeLocations.filter(loc => 
-        loc.title.toLowerCase().includes(query)
+  const onApplyFilters = () => {
+    let filtered = [...wildlifeLocations];
+
+    // Apply taxonomy filter
+    if (taxonomyFilter) {
+      filtered = filtered.filter(loc => loc.taxo === taxonomyFilter);
+    }
+
+    // Apply author filter
+    if (authorFilter.trim()) {
+      const authorQuery = authorFilter.toLowerCase().trim();
+      filtered = filtered.filter(loc => 
+        loc.author.toLowerCase().includes(authorQuery)
       );
-      setSearchResults(results);
-      setCurrentResultIndex(0);
-      setFilteredLocations(null); // Show all, but we'll navigate to results
-      if (results.length > 0) {
-        const first = results[0];
-        worldMapRef.current?.flyTo(first.position[0], first.position[1], 10);
-        handleMarkerClick(first);
-      }
-    } else if (searchType === 'taxonomy') {
-      if (query === 'all') {
-        setFilteredLocations(null);
-      } else {
-        const filtered = wildlifeLocations.filter(loc => loc.taxo === query);
-        setFilteredLocations(filtered);
-      }
-      setSearchResults([]);
-      setCurrentResultIndex(0);
-    } else if (searchType === 'author') {
-      const filtered = wildlifeLocations.filter(loc => 
-        loc.author.toLowerCase().includes(query)
+    }
+
+    // Apply region filter
+    if (regionFilter) {
+      // For region filtering, we need to define which countries belong to which regions
+      const regionCountries: Record<string, string[]> = {
+        'africa': ['kenya', 'morocco', 'south africa', 'egypt'],
+        'asia': ['china', 'philippines', 'japan', 'india', 'thailand', 'malaysia', 'indonesia'],
+        'europe': [],
+        'north america': ['usa', 'canada', 'mexico'],
+        'south america': ['brazil', 'ecuador', 'peru', 'argentina'],
+        'australia': ['australia'],
+        'antarctica': []
+      };
+      
+      const countriesInRegion = regionCountries[regionFilter] || [];
+      filtered = filtered.filter(loc => {
+        // Check if location's country matches any in the region
+        const locationCountry = loc.location.toLowerCase();
+        return countriesInRegion.some(country => locationCountry.includes(country));
+      });
+    }
+
+    // Apply country filter
+    if (countryFilter) {
+      filtered = filtered.filter(loc => 
+        loc.location.toLowerCase().includes(countryFilter)
       );
-      setFilteredLocations(filtered);
-      setSearchResults([]);
-      setCurrentResultIndex(0);
-    } else if (searchType === 'region' || searchType === 'country') {
-      // Define region and country coordinates
-      const locations: Record<string, [number, number]> = {
-        // Regions
+    }
+
+    setFilteredLocations(filtered.length > 0 ? filtered : null);
+    setSearchResults([]); // Clear animal search results when applying filters
+    setCurrentResultIndex(0);
+
+    // Zoom to region if region filter is applied and no country filter
+    if (regionFilter && !countryFilter) {
+      const regionCoords: Record<string, [number, number]> = {
         'africa': [0, 20],
         'asia': [30, 100],
         'europe': [50, 10],
@@ -398,13 +443,23 @@ export default function WildlifeMap() {
         'south america': [-15, -55],
         'australia': [-25, 135],
         'antarctica': [-80, 0],
-        // Countries
+      };
+      const coords = regionCoords[regionFilter];
+      if (coords) {
+        worldMapRef.current?.flyTo(coords[0], coords[1], 3);
+      }
+    }
+
+    // Zoom to country if country filter is applied
+    if (countryFilter) {
+      const locations: Record<string, [number, number]> = {
         'usa': [40, -100],
         'china': [35, 105],
         'brazil': [-10, -55],
         'kenya': [0, 38],
         'indonesia': [-2, 118],
         'ecuador': [-2, -78],
+        'australia': [-25, 135],
         'peru': [-10, -75],
         'morocco': [32, -5],
         'philippines': [12, 122],
@@ -419,14 +474,23 @@ export default function WildlifeMap() {
         'thailand': [15, 101],
         'malaysia': [4, 102],
       };
-      const coords = locations[query];
+      const coords = locations[countryFilter];
       if (coords) {
         worldMapRef.current?.flyTo(coords[0], coords[1], 4);
       }
-      setFilteredLocations(null);
-      setSearchResults([]);
-      setCurrentResultIndex(0);
     }
+  };
+
+  const onClearFilters = () => {
+    setTaxonomyFilter("");
+    setAuthorFilter("");
+    setRegionFilter("");
+    setCountryFilter("");
+    setFilteredLocations(null);
+    setSearchResults([]);
+    setCurrentResultIndex(0);
+    setAnimalQuery("");
+    worldMapRef.current?.resetView();
   };
 
   const closeModal = () => {
@@ -451,14 +515,22 @@ export default function WildlifeMap() {
 
       {/* Search Modal */}
       <SearchModal 
-        searchQuery={searchQuery} 
-        setSearchQuery={setSearchQuery}
-        searchType={searchType}
-        setSearchType={setSearchType}
-        onSearch={onSearch}
+        animalQuery={animalQuery}
+        setAnimalQuery={setAnimalQuery}
+        onAnimalSearch={onAnimalSearch}
         searchResults={searchResults}
         currentResultIndex={currentResultIndex}
         setCurrentResultIndex={setCurrentResultIndex}
+        taxonomyFilter={taxonomyFilter}
+        setTaxonomyFilter={setTaxonomyFilter}
+        authorFilter={authorFilter}
+        setAuthorFilter={setAuthorFilter}
+        regionFilter={regionFilter}
+        setRegionFilter={setRegionFilter}
+        countryFilter={countryFilter}
+        setCountryFilter={setCountryFilter}
+        onApplyFilters={onApplyFilters}
+        onClearFilters={onClearFilters}
       />
 
       {/* Wildlife Detail Modal */}
